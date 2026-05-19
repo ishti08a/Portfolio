@@ -1860,7 +1860,8 @@
           "Web Developer",
         ],
         profileImage:
-          "https://photos.fife.usercontent.google.com/pw/AP1GczPTGONFsoJisr9hBjGHAdlEnDkAgOBqdGu4DE8foIqXys8rpTRbj-tm=w779-h889-s-no-gm?authuser=0", // ব্যবহারকারীর সরবরাহ করা URL
+          "https://raw.githubusercontent.com/ishti08a/portfolio/main/assets/dp.jpeg", // GitHub রাও URL, রিপোজিটরি নাম বা ব্রাঞ্চ ভিন্ন হলে এটি সংশোধন করুন
+        profileImageFallback: "assets/dp.jpeg", // লোকাল ফলোব্যাক যাতে হিরো ছবি সবসময় দেখায়
         email: "ishti08aa@gmail.com",
         phone: "+8801568251443",
         location: "Dhaka, Bangladesh",
@@ -2147,21 +2148,29 @@
 
         const tester = new Image();
         tester.crossOrigin = "anonymous";
+        let triedFallback = false;
+
         tester.onload = function () {
           const img = document.createElement("img");
-          img.src = siteData.profileImage;
+          img.src = tester.src;
           img.alt = siteData.name || "Profile";
           img.className = "profile-img";
           wrap.appendChild(img);
         };
+
         tester.onerror = function (err) {
-          console.error(
-            "Profile image failed to load:",
-            siteData.profileImage,
-            err,
-          );
+          if (
+            !triedFallback &&
+            siteData.profileImageFallback &&
+            siteData.profileImageFallback !== siteData.profileImage
+          ) {
+            triedFallback = true;
+            tester.src = siteData.profileImageFallback;
+            return;
+          }
+
+          console.error("Profile image failed to load:", tester.src, err);
           wrap.innerHTML = '<i class="fas fa-user"></i>';
-          // add debug link so user can open the image directly
           if (!document.getElementById("avatar-debug-link")) {
             const link = document.createElement("a");
             link.id = "avatar-debug-link";
