@@ -4,7 +4,7 @@ This repository contains the portfolio website for the project.
 
 ## Contents
 
-- arif-portfolio.html
+- index.html
 - assets/
 
 ## Usage
